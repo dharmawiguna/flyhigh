@@ -1,6 +1,78 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { FlightSeat, TypeSeat } from "@prisma/client";
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import dayjs from "dayjs";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
+
+export const generateSeatPerClass = (flightId: string) => {
+  const SEAT_CLASS: TypeSeat[] = ["ECONOMY", "BUSINESS", "FIRST"];
+  const SEAT_CODE = ["A", "B", "C", "D"];
+
+  const seats: { seatNumber: string; type: TypeSeat; flightId: string }[] = [];
+
+  for (const className of SEAT_CLASS) {
+    for (const seat of SEAT_CODE) {
+      for (let i = 1; i <= 5; i++) {
+        seats.push({
+          seatNumber: seat + 1,
+          type: className as TypeSeat,
+          flightId,
+        });
+      }
+    }
+  }
+  return seats;
+};
+
+export const dateFormat = (
+  date: Date | string,
+  format: string = "DD MMM YYYY HH:mm"
+) => {
+  if (!date) {
+    return "";
+  }
+
+  const dateformat = dayjs(date).format(format);
+
+  return dateformat;
+};
+
+export const rupiahFormat = (value: number) => {
+  return Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(value);
+};
+
+export const mappingSeats = (seats: FlightSeat[]) => {
+  const totalSeatEconomy = seats.filter(
+    (item) => item.type === "ECONOMY"
+  ).length;
+  const totalSeatBusiness = seats.filter(
+    (item) => item.type === "BUSINESS"
+  ).length;
+  const totalSeatFirst = seats.filter((item) => item.type === "FIRST").length;
+
+  const economy = seats.filter(
+    (item) => item.type === "ECONOMY" && item.isBooked
+  ).length;
+  const business = seats.filter(
+    (item) => item.type === "BUSINESS" && item.isBooked
+  ).length;
+  const first = seats.filter(
+    (item) => item.type === "FIRST" && item.isBooked
+  ).length;
+
+  return {
+    economy,
+    business,
+    first,
+
+    totalSeatEconomy,
+    totalSeatBusiness,
+    totalSeatFirst,
+  };
+};
