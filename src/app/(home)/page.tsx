@@ -1,113 +1,1232 @@
 import Image from "next/image";
+import Link from "next/link";
+import { getCityFilter } from "./lib/data";
+import Navbar from "../components/navbar";
+import CompanyLogo from "../components/company-logo";
+import { searchFlight } from "./lib/actions";
 
-export default function Home() {
+export default async function Home() {
+  const filter = await getCityFilter();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <section
+        id="Header"
+        className="bg-[url('/assets/images/background/airplane.png')] bg-no-repeat bg-cover bg-left-top -z-10"
+      >
+        <div className="Header-content bg-gradient-to-r from-[#080318] to-[rgba(8,3,24,0)] z=0">
+          <Navbar />
+          <div className="hero-section container max-w-[1130px] w-full mx-auto flex flex-col gap-[90px] mt-[103px]">
+            <div className="title flex flex-col gap-[30px]">
+              <h1 className="font-extrabold text-[80px] leading-[90px]">
+                Best Flights. <br />
+                Cheaper Budget.
+              </h1>
+              <p className="font-medium text-lg leading-[36px]">
+                No more long queue, get more delicious heavy meals. <br />
+                Crafted by best talented people around the world.
+              </p>
+            </div>
+            <form
+              action={searchFlight}
+              className="bg-white text-flysha-black w-full flex justify-between items-center rounded-[20px] p-5"
+            >
+              <div className="flex gap-[50px] items-center p-5">
+                <div className="flex flex-col justify-center gap-[14px]">
+                  <label htmlFor="departure" className="text-lg">
+                    Departure
+                  </label>
+                  <div className="flex gap-[10px]">
+                    <div className="flex items-center w-8 h-8 shrink-0">
+                      <Image
+                        width={150}
+                        height={60}
+                        src="/assets/images/icons/airplane.svg"
+                        alt="icon"
+                      />
+                    </div>
+                    <select
+                      name="departure"
+                      id="departure"
+                      className="font-semibold text-[22px] leading-[26.63px] appearance-none bg-[url(/assets/images/icons/arrow-down.svg)] bg-no-repeat bg-[right_1px] pr-[30px]"
+                    >
+                      <option value="" disabled selected>
+                        Departure
+                      </option>
+                      {filter?.map((val, key) => (
+                        <option value={val.departureCity} key={key}>
+                          {val.departureCity}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <hr className="border border-[#EDE8F5] h-[60px]" />
+                <div className="flex flex-col justify-center gap-[14px]">
+                  <label htmlFor="arrival" className="text-lg">
+                    Arrival
+                  </label>
+                  <div className="flex gap-[10px]">
+                    <div className="flex items-center w-8 h-8 shrink-0">
+                      <Image
+                        width={150}
+                        height={60}
+                        src="/assets/images/icons/airplane.svg"
+                        alt="icon"
+                      />
+                    </div>
+                    <select
+                      name="arrival"
+                      id="arrival"
+                      className="font-semibold text-[22px] leading-[26.63px] appearance-none bg-[url(/assets/images/icons/arrow-down.svg)] bg-no-repeat bg-[right_1px] pr-[30px]"
+                    >
+                      <option value="" disabled selected>
+                        Arrival
+                      </option>
+                      {filter?.map((val, key) => (
+                        <option value={val.destinationCity} key={key}>
+                          {val.destinationCity}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <hr className="border border-[#EDE8F5] h-[60px]" />
+                <div className="flex flex-col justify-center gap-[14px]">
+                  <label htmlFor="date" className="text-lg">
+                    Departure Date
+                  </label>
+                  <div className="flex gap-[10px]">
+                    <div className="flex items-center w-8 h-8 shrink-0">
+                      <Image
+                        width={150}
+                        height={60}
+                        src="/assets/images/icons/calendar.svg"
+                        alt="icon"
+                      />
+                    </div>
+                    <input
+                      type="date"
+                      name="date"
+                      id="date"
+                      className="relative font-semibold text-[22px] leading-[26.63px] w-[157px] bg-transparent focus:outline-none appearance-none [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:opacity-0"
+                    />
+                  </div>
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="font-bold text-2xl leading-9 text-flysha-black text-center bg-flysha-light-purple rounded-[18px] p-[12px_30px] flex shrink-0 items-center h-[108px]  transition-all duration-300 hover:shadow-[0_10px_20px_0_#B88DFF]"
+              >
+                Explore Now
+              </button>
+            </form>
+          </div>
+          <CompanyLogo />
         </div>
-      </div>
+      </section>
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <section
+        id="Services"
+        className="container max-w-[1130px] mx-auto flex flex-col pt-[100px] gap-[30px]"
+      >
+        <h2 className="font-bold text-[32px] leading-[48px] text-center">
+          We Ensure You <br />
+          Fly With Us Forever
+        </h2>
+        <div className="flex justify-between">
+          <div className="flex flex-col gap-[30px] w-[220px]">
+            <div className="flex shrink-0 w-[70px] h-[70px] rounded-full items-center justify-center bg-flysha-light-purple">
+              <Image
+                width={35}
+                height={35}
+                src="/assets/images/icons/profile-2user.svg"
+                alt="icon"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="font-bold text-2xl leading-[36px]">Talented Crew</p>
+              <p className="leading-[30px] text-flysha-off-purple">
+                Our jets protected by metal that can’t be destroyed.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-[30px] w-[220px]">
+            <div className="flex shrink-0 w-[70px] h-[70px] rounded-full items-center justify-center bg-flysha-light-purple">
+              <Image
+                width={35}
+                height={35}
+                src="/assets/images/icons/shield-tick.svg"
+                alt="icon"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="font-bold text-2xl leading-[36px]">Safe Guard</p>
+              <p className="leading-[30px] text-flysha-off-purple">
+                Our jets protected by metal that can’t be destroyed.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-[30px] w-[220px]">
+            <div className="flex shrink-0 w-[70px] h-[70px] rounded-full items-center justify-center bg-flysha-light-purple">
+              <Image
+                width={35}
+                height={35}
+                src="/assets/images/icons/crown.svg"
+                alt="icon"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="font-bold text-2xl leading-[36px]">Best Awards</p>
+              <p className="leading-[30px] text-flysha-off-purple">
+                Our jets protected by metal that can’t be destroyed.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-[30px] w-[220px]">
+            <div className="flex shrink-0 w-[70px] h-[70px] rounded-full items-center justify-center bg-flysha-light-purple">
+              <Image
+                width={35}
+                height={35}
+                src="/assets/images/icons/building-3.svg"
+                alt="icon"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="font-bold text-2xl leading-[36px]">
+                Pickup at Home
+              </p>
+              <p className="leading-[30px] text-flysha-off-purple">
+                Our jets protected by metal that can’t be destroyed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
+      <section
+        id="Selected"
+        className="container max-w-[1130px] mx-auto flex flex-col pt-[100px] gap-[30px]"
+      >
+        <div className="flex justify-between items-center">
+          <h2 className="font-bold text-[32px] leading-[48px] text-center">
+            Best Selective
           </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+          <div className="flex gap-[10px]">
+            <button className="flex shrink-0 w-10 h-10 items-center justify-center bg-white rounded-full">
+              <Image
+                src="/assets/images/icons/arrow-right.svg"
+                className="rotate-180"
+                alt="icon"
+                width={20}
+                height={20}
+              />
+            </button>
+            <button className="flex shrink-0 w-10 h-10 items-center justify-center bg-white rounded-full">
+              <Image
+                height={20}
+                width={20}
+                src="/assets/images/icons/arrow-right.svg"
+                alt="icon"
+              />
+            </button>
+          </div>
+        </div>
+        <div className="grid grid-cols-4 gap-[30px]">
+          <div className="flex flex-col gap-5">
+            <div className="rounded-[30px] h-[310px] overflow-hidden">
+              <Image
+                height={40}
+                width={40}
+                src="/assets/images/thumbnail/thumbnail1.png"
+                className="w-full h-[310px] object-cover"
+                alt="thumbnail"
+              />
+            </div>
+            <div className="flex gap-[14px] items-center">
+              <div className="flex shrink-0 w-8 h-8">
+                <Image
+                  height={40}
+                  width={40}
+                  src="/assets/images/icons/crown-white.svg"
+                  className="w-8 h-8"
+                  alt="icon"
+                />
+              </div>
+              <div className="flex flex-col gap-[2px]">
+                <p className="font-bold text-lg">First Lounge</p>
+                <p className="text-flysha-off-purple">Manhanggattan</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="rounded-[30px] h-[310px] overflow-hidden">
+              <Image
+                height={40}
+                width={40}
+                src="/assets/images/thumbnail/thumbnail2.png"
+                className="w-full h-[310px] object-cover"
+                alt="thumbnail"
+              />
+            </div>
+            <div className="flex gap-[14px] items-center">
+              <div className="flex shrink-0 w-8 h-8">
+                <Image
+                  height={40}
+                  width={40}
+                  src="/assets/images/icons/crown-white.svg"
+                  className="w-8 h-8"
+                  alt="icon"
+                />
+              </div>
+              <div className="flex flex-col gap-[2px]">
+                <p className="font-bold text-lg">Business First</p>
+                <p className="text-flysha-off-purple">Gulfstream 109-BB</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="rounded-[30px] h-[310px] overflow-hidden">
+              <Image
+                height={40}
+                width={40}
+                src="/assets/images/thumbnail/thumbnail3.png"
+                className="w-full h-[310px] object-cover"
+                alt="thumbnail"
+              />
+            </div>
+            <div className="flex gap-[14px] items-center">
+              <div className="flex shrink-0 w-8 h-8">
+                <Image
+                  height={40}
+                  width={40}
+                  src="/assets/images/icons/crown-white.svg"
+                  className="w-8 h-8"
+                  alt="icon"
+                />
+              </div>
+              <div className="flex flex-col gap-[2px]">
+                <p className="font-bold text-lg">Pickup at Home</p>
+                <p className="text-flysha-off-purple">Bentley Banta</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="rounded-[30px] h-[310px] overflow-hidden">
+              <Image
+                height={40}
+                width={40}
+                src="/assets/images/thumbnail/thumbnail4.png"
+                className="w-full h-[310px] object-cover"
+                alt="thumbnail"
+              />
+            </div>
+            <div className="flex gap-[14px] items-center">
+              <div className="flex shrink-0 w-8 h-8">
+                <Image
+                  height={40}
+                  width={40}
+                  src="/assets/images/icons/crown-white.svg"
+                  className="w-8 h-8"
+                  alt="icon"
+                />
+              </div>
+              <div className="flex flex-col gap-[2px]">
+                <p className="font-bold text-lg">Fly Roam</p>
+                <p className="text-flysha-off-purple">Capung A19-22</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
+      <section
+        id="Testimonials"
+        className="w-full flex flex-col pt-[100px] gap-[30px]"
+      >
+        <div className="flex flex-col gap-[6px] items-center">
+          <h2 className="font-bold text-[32px] leading-[48px] text-center">
+            Best Selective
           </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
+          <p className="font-medium text-flysha-off-purple">
+            We gave them all the best experiences ever
           </p>
-        </a>
+        </div>
+        <div className="testimonial-slider w-full overflow-hidden">
+          <div className="slider flex shrink-0 w-max">
+            <div className="animate-[slide_15s_linear_infinite] flex gap-[30px] pl-[30px] items-center h-[228px]">
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="animate-[slide_15s_linear_infinite] flex gap-[30px] pl-[30px] items-center h-[228px]">
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="animate-[slide_15s_linear_infinite] flex gap-[30px] pl-[30px] items-center h-[228px]">
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="testi-cards flex flex-col gap-[14px] h-full w-fit bg-flysha-bg-purple p-5 rounded-[20px] overflow-hidden">
+                <p className="review leading-[30px] h-[90px] w-[305px]">
+                  I thought cheaper was not good, well, I personally never had
+                  this amazing experience. Thank you!!
+                </p>
+                <div className="flex">
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                  <Image
+                    width={30}
+                    height={30}
+                    src="../assets/images/icons/Star.svg"
+                    className="w-5 h-5"
+                    alt="star"
+                  />
+                </div>
+                <div className="flex gap-4 items-center">
+                  <div className="flex shrink-0 rounded-full w-[50px] h-[50px] overflow-hidden">
+                    <Image
+                      width={30}
+                      height={30}
+                      src="../assets/images/photos/Group 47.png"
+                      className="w-full h-full object-cover"
+                      alt="photo"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <p className="font-bold">Jessi Lyio</p>
+                    <p className="text-sm text-flysha-off-purple">
+                      CPO Agolia Modd
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <footer className="flex flex-col justify-between mt-[150px] border-t-[6px] border-flysha-light-purple p-[100px_10px_30px]">
+        <div className="container max-w-[1130px] mx-auto flex justify-between relative">
+          <Image
+            width={300}
+            height={300}
+            src="../assets/images/icons/Ellipse 4.png"
+            className="absolute h-[300px] -top-[45px] -left-[20px] z-0"
+            alt="icon"
+          />
+          <div className="flex shrink-0 h-fit z-10">
+            <Image
+              width={70}
+              height={70}
+              src="../assets/images/logos/logo.svg"
+              alt=""
+            />
+          </div>
+          <div className="flex gap-[100px] z-10">
+            <div className="flex flex-col gap-5">
+              <p className="font-bold text-lg">Explore</p>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Services
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Testimonials
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Pricing
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                About
+              </Link>
+            </div>
+            <div className="flex flex-col gap-5">
+              <p className="font-bold text-lg">Services</p>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Pickup at Home
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                First Lounge Plus
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Business Room
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Bentley Power
+              </Link>
+            </div>
+            <div className="flex flex-col gap-5">
+              <p className="font-bold text-lg">About</p>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Company Profile
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Our Investors
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Media Press
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300"
+              >
+                Careers
+              </Link>
+            </div>
+            <div className="flex flex-col gap-5">
+              <p className="font-bold text-lg">Connect</p>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300 flex items-center gap-[6px]"
+              >
+                <Image
+                  width={20}
+                  height={20}
+                  src="../assets/images/icons/call.svg"
+                  alt="icon"
+                />
+                +1 2208 1996
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300 flex items-center gap-[6px]"
+              >
+                <Image
+                  width={20}
+                  height={20}
+                  src="../assets/images/icons/dribbble.svg"
+                  alt="icon"
+                />
+                buildwithangga
+              </Link>
+              <Link
+                href="#"
+                className="font-medium hover:font-semibold hover:text-flysha-light-purple transition-all duration-300 flex items-center gap-[6px]"
+              >
+                <Image
+                  width={20}
+                  height={20}
+                  src="../assets/images/icons/sms.svg"
+                  alt="icon"
+                />
+                dharmawiguna982@gmail.com
+              </Link>
+            </div>
+          </div>
+        </div>
+        <p className="mx-auto mt-[60px] text-[#A0A0AC] text-sm z-10">
+          All Rights Reserved. Copyright Dharma Wiguna 2024.
+        </p>
+      </footer>
+    </>
   );
 }

@@ -27,7 +27,9 @@ export default async function DashboardLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={`${inter.className} text-flysha-dark-grey font-poppins bg-white`}
+      >
         <section>
           <nav className="border-b border-muted p-5">
             <div className="flex flex-row items-center justify-between">

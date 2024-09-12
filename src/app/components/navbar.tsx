@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import NavbarAuth from "./navbar-auth";
 
 export default function Navbar() {
   return (
@@ -8,7 +9,7 @@ export default function Navbar() {
       id="Navbar"
       className="container max-w-[1130px] mx-auto flex justify-between items-center pt-[30px]"
     >
-      <Link href="index.html" className="flex items-center shrink-0">
+      <Link href="/" className="flex items-center shrink-0">
         <Image
           src="/assets/images/logos/logo.svg"
           alt="logo"
@@ -18,36 +19,31 @@ export default function Navbar() {
       </Link>
       <ul className="nav-menus flex gap-[30px] items-center w-fit">
         <li>
-          <a href="" className="font-medium">
+          <Link href="" className="font-medium">
             Flash Sale
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="" className="font-medium">
+          <Link href="" className="font-medium">
             Discover
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="" className="font-medium">
+          <Link href="" className="font-medium">
             Packages
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="" className="font-medium">
+          <Link href="" className="font-medium">
             Stories
-          </a>
+          </Link>
         </li>
         <li>
-          <a href="" className="font-medium">
+          <Link href="" className="font-medium">
             About
-          </a>
+          </Link>
         </li>
-        <a
-          href="signin.html"
-          className="font-bold text-flysha-black bg-flysha-light-purple rounded-full p-[12px_30px] transition-all duration-300 hover:shadow-[0_10px_20px_0_#B88DFF]"
-        >
-          Sign In
-        </a>
+        <NavbarAuth />
       </ul>
     </nav>
   );

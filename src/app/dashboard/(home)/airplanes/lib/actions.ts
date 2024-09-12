@@ -68,7 +68,7 @@ export async function saveAirplane(
   }
 
   revalidatePath("/dashboard/airplanes");
-  redirect("/dashboard/aiprlanes");
+  redirect("/dashboard/airplanes");
 }
 
 export async function updateAirplane(

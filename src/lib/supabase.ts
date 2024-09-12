@@ -20,6 +20,9 @@ export const uploadFile = async (file: File) => {
         upsert: false,
       });
 
+    console.log("error supabase", error);
+    console.log("filename supabase", filename);
+
     if (error) {
       throw new Error(error.message);
     }

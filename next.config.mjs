@@ -11,6 +11,7 @@ const nextConfig = {
         hostname: "dcagtbsfyubfnaozxvuc.supabase.co",
       },
     ],
+    unoptimized: true,
   },
 };
 
