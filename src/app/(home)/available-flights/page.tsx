@@ -1,10 +1,9 @@
 import Navbar from "@/app/components/navbar";
-import Image from "next/image";
+import React, { Suspense } from "react";
+import FilterAirlines from "./components/filter-airlines";
 import FilterClass from "./components/filter-class";
 import FilterFlight from "./components/filter-flight";
-import FilterAirlines from "./components/filter-airlines";
 import ListFlight from "./components/list-flight";
-import { Suspense } from "react";
 import LoadingFilterAirline from "./components/loading-filter-airlines";
 
 export default function AvailableFlightsPage() {

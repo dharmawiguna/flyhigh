@@ -38,6 +38,7 @@ const CheckboxAirline: FC<CheckboxAirlineProps> = ({ value }) => {
           name="airlines"
           id={value.name}
           value={value.id}
+          onChange={handleChange}
           className="w-[18px] h-[18px] appearance-none checked:border-[3px] checked:border-solid checked:border-flysha-black rounded-[6px] checked:bg-flysha-light-purple ring-2 ring-flysha-off-purple checked:ring-white"
         />
         {value.name}

@@ -8,6 +8,7 @@ import React, {
   Dispatch,
   FC,
   ReactNode,
+  Suspense,
   useReducer,
 } from "react";
 
@@ -98,11 +99,13 @@ const Flightproviders: FC<FlightprovidersProps> = ({ children }) => {
   });
 
   return (
-    <FlightContext.Provider
-      value={{ flights: data, isLoading, dispatch, state }}
-    >
-      {children}
-    </FlightContext.Provider>
+    <Suspense fallback={<div>Loading...</div>}>
+      <FlightContext.Provider
+        value={{ flights: data, isLoading, dispatch, state }}
+      >
+        {children}
+      </FlightContext.Provider>
+    </Suspense>
   );
 };
 
